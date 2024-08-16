@@ -5,10 +5,17 @@ const foodSchema = new mongoose.Schema({
     type:String,
     required: true,
    },
-   ingredients: String,
-   isVegan: String,
-   rating:Number,
-   price:String
-});  
+   ingredients: [String],
+   isVegan: Boolean,
+   rating: {
+     type: Number, 
+     min: 0,
+     max: 5
+   },
+   price: {
+     type: String,
+     required: true
+   },
+ }); 
 
 module.exports = foodSchema

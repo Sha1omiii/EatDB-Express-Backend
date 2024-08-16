@@ -9,7 +9,7 @@ const restaurantSchema = new mongoose.Schema({
    category: String,
    rating: Number,
    review:String,
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   foodList:[foodSchema]
 });
 

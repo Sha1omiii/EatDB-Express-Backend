@@ -2,11 +2,22 @@ const express = require('express');
 const verifyToken = require('../middleware/verify-token.js');
 const Restaurant = require('../models/restaurant');
 const router = express.Router();
+const foodRouter = require('./foods.js');
+
+router.use('/:restaurantId/foods', foodRouter);
+
+router.get('/preview', async (req, res) => {
+  try {
+    const previewRestaurants = await Restaurant.find().limit(6) // geting just the first 6 restaurants from db
+    res.json(previewRestaurants);
+  } catch (e) {
+    res.status(500).json({ message: 'Error fetching restaurants' });
+  }
+})
 
 router.use(verifyToken);
 
 // Create a new restaurant
-
 router.post('/', async (req, res) => {
   try {
     console.log('Request body:', req.body);
@@ -25,6 +36,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
+    // we will only use the author._id in the front end
     const restaurants = await Restaurant.find({}).populate('author').sort({ createdAt: 'desc' });
     console.log('Query results:', restaurants);
     res.status(200).json(restaurants);

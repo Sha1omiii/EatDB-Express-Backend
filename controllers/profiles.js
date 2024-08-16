@@ -6,7 +6,7 @@ const verifyToken = require('../middleware/verify-token');
 
 router.get('/:userId', verifyToken, async (req, res) => {
   try {
-    if (req.user._id !== req.params.userId){ 
+    if (req.user._id.toString() !== req.params.userId){  // making sure that the logged in user is accessing their own profile
         return res.status(401).json({ error: "Unauthorized"})
     }
     const user = await User.findById(req.params.userId);
@@ -16,7 +16,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
     }
     res.json({ user });
   } catch (error) {
-    if (res.statusCode === 404) {
+    if (error.statusCode === 'CastError') {
       res.status(404).json({ error: error.message });
     } else {
       res.status(500).json({ error: error.message });

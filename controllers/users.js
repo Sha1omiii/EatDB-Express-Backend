@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const SALT_LENGTH = 12;
 
-router.post('/signup', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   try {
       const userInDatabase = await User.findOne({ username: req.body.username })
       if (userInDatabase) {
@@ -28,7 +28,7 @@ router.post('/signup', async (req, res) => {
 })
 
 
-router.post('/signin', async (req, res) => {
+router.post('/sign-in', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (user && bcrypt.compareSync(req.body.password, user.hashedPassword)) {
